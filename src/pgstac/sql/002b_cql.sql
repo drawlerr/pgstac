@@ -95,8 +95,8 @@ BEGIN
         WHEN 't_after'        THEN 'll > rh'
         WHEN 't_meets'        THEN 'lh = rl'
         WHEN 't_metby'        THEN 'll = rh'
-        WHEN 't_overlaps'     THEN 'll < rl AND rl < lh < rh'
-        WHEN 't_overlappedby' THEN 'rl < ll < rh AND lh > rh'
+        WHEN 't_overlaps'     THEN 'll < rl AND rl < lh AND lh < rh'
+        WHEN 't_overlappedby' THEN 'rl < ll AND ll < rh AND lh > rh'
         WHEN 't_starts'       THEN 'll = rl AND lh < rh'
         WHEN 't_startedby'    THEN 'll = rl AND lh > rh'
         WHEN 't_during'       THEN 'll > rl AND lh < rh'
@@ -108,10 +108,10 @@ BEGIN
         WHEN 't_intersects'   THEN 'll <= rh AND lh >= rl'
         WHEN 'anyinteracts'   THEN 'll <= rh AND lh >= rl'
     END;
-    outq := regexp_replace(outq, '\mll\M', ll);
-    outq := regexp_replace(outq, '\mlh\M', lh);
-    outq := regexp_replace(outq, '\mrl\M', rl);
-    outq := regexp_replace(outq, '\mrh\M', rh);
+    outq := regexp_replace(outq, '\mll\M', ll, 'g');
+    outq := regexp_replace(outq, '\mlh\M', lh, 'g');
+    outq := regexp_replace(outq, '\mrl\M', rl, 'g');
+    outq := regexp_replace(outq, '\mrh\M', rh, 'g');
     outq := format('(%s)', outq);
     RETURN outq;
 END;
